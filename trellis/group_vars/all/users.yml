@@ -1,0 +1,42 @@
+# Documentation: https://roots.io/trellis/docs/ssh-keys/
+admin_user: admin
+
+# Also define 'vault_users' (`group_vars/staging/vault.yml`, `group_vars/production/vault.yml`)
+users:
+  - name: "{{ web_user }}"
+    groups:
+      - "{{ web_group }}"
+    keys:
+      - "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
+      - https://github.com/retlehs.keys
+      - https://github.com/alkymst.keys
+      - https://github.com/fullyint.keys
+      - https://github.com/jdarrohn.keys
+      - https://github.com/justinluke.keys
+      - https://github.com/Brandonsmith23.keys
+      - https://github.com/cedarstay.keys
+      - https://github.com/entropi-llc.keys
+      - https://github.com/gwenanncastor.keys
+      - https://github.com/kySuga.keys
+      - "{{ lookup('file', 'keys/circle-ci-deploy.pub') }}"
+  - name: "{{ admin_user }}"
+    groups:
+      - sudo
+    keys:
+      - "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
+      - https://github.com/retlehs.keys
+      - https://github.com/alkymst.keys
+      - https://github.com/fullyint.keys
+      - https://github.com/jdarrohn.keys
+      - https://github.com/justinluke.keys
+      - https://github.com/Brandonsmith23.keys
+      - https://github.com/cedarstay.keys
+      - https://github.com/entropi-llc.keys
+      - https://github.com/gwenanncastor.keys
+      - https://github.com/kySuga.keys
+      - "{{ lookup('file', 'keys/circle-ci-deploy.pub') }}"
+
+web_user: web
+web_group: www-data
+web_sudoers:
+  - "/usr/sbin/service php7.1-fpm *"

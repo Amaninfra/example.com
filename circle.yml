@@ -1,0 +1,47 @@
+## Replace:
+## - example.com
+## - example-com
+## - sage
+
+machine:
+  python:
+    version: 2.7.10
+  node:
+    version: 6.9.5
+
+dependencies:
+  override:
+    - yarn
+  cache_directories:
+    - ~/.cache/yarn
+  pre:
+    - |
+      curl -X POST -H "Content-type: application/json" --data "{\"attachments\":[{\"fallback\": \"\",\"color\":\"#36a64f\",\"text\":\"Build started by ${CIRCLE_USERNAME} (<${CIRCLE_BUILD_URL}|#${CIRCLE_BUILD_NUM}>)\"}],\"channel\":\"#example-com\"}" https://hooks.slack.com/services/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
+    - echo $vault_pass >> ~/.vault_pass
+    - rm /opt/circleci/php/$(phpenv global)/etc/conf.d/xdebug.ini
+    - pip install ansible==2.3.2.0
+    - cd trellis && ansible-galaxy install -r requirements.yml
+    - cp ~/.ssh/id_eee6982595e4138aaaed80f21eb989f2.pub ~/.ssh/id_rsa.pub
+    # - yarn global add gulp bower
+
+test:
+  override:
+    # Sage 8
+    # - cd site/web/app/themes/sage && yarn
+    # - cd site/web/app/themes/sage && bower install
+    # - cd site/web/app/themes/sage && gulp --production
+    # Sage 9
+    # - cd site/web/app/themes/sage && yarn
+    # - cd site/web/app/themes/sage && yarn run build:production
+    # Other themes
+    # - cd site
+
+deployment:
+  production:
+    branch: master
+    commands:
+      - cd trellis && ansible-playbook deploy.yml --vault-password-file="~/.vault_pass" -e "site=example.com env=production"
+  staging:
+    branch: staging
+    commands:
+      - cd trellis && ansible-playbook deploy.yml --vault-password-file="~/.vault_pass" -e "site=example.com env=staging"

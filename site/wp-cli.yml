@@ -1,0 +1,8 @@
+path: web/wp
+
+@development:
+  ssh: vagrant@example.dev/srv/www/example.com/current
+@staging:
+  ssh: web@example.viewsite.link/srv/www/example.com/current
+@production:
+  ssh: web@example.com/srv/www/example.com/current
